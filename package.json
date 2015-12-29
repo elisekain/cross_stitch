@@ -1,0 +1,22 @@
+{
+  "name": "cross_stitch",
+  "version": "1.0.0",
+  "description": "Simple app to practice making AJAX requests to 3rd party API's.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elisekain/cross_stitch.git"
+  },
+  "author": "Elise Kain",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elisekain/cross_stitch/issues"
+  },
+  "homepage": "https://github.com/elisekain/cross_stitch#readme",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
