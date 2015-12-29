@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/elisekain/cross_stitch#readme",
   "dependencies": {
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "nodemon": "^1.8.1"
   }
 }
