@@ -1,8 +1,10 @@
 var express = require("express");
 var app = express();
 
+app.set("view engine", "hbs");
+
 app.get("/", function(req, res){
-  res.send("Cross Stitch");
+  res.render("index");
 });
 
 app.listen(4000, function(){
