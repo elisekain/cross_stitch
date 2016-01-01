@@ -1,11 +1,11 @@
 # Cross Stitch
 We're going to create an Express app that makes a call to the Etsy API and uses Handlebars to craft templates using our new data from the Etsy API. This tutorial is good practice for anyone looking to:
-- Learn how to setup and start an Express app
-- Practice making a call to a 3rd party API
-- See how Handlebars can be used as a templating engine for Express
+- Learn how to setup and start an Express app.
+- Practice making a call to a 3rd party API.
+- See how Handlebars can be used as a templating engine for Express.
 
 ## Express application setup
-Anything in this tutorial that begins with `$` should be entered into your terminal. Let's start by:
+Anything in this tutorial that begins with `$` should be entered into your terminal. Let's start by doing just that:
 
 - Making a directory for our project
 - Going into the directory
@@ -19,11 +19,11 @@ $ npm init
 You can fill out the information prompted by npm init (this information will be added to the package.json file)...or simply hit enter until it asks "Is this okay?". Then, respond with "yes".
 
 ## Install and save dependencies with npm
-We need to install [Express](http://expressjs.com/), [Nodemon](http://nodemon.io/) and [Handlebars (hbs)](http://handlebarsjs.com/) for this application. The `--save` flag modifies the package.json file to include dependencies for our app.
+We need to install [Express](http://expressjs.com/), [Nodemon](http://nodemon.io/) and [Handlebars (hbs)](http://handlebarsjs.com/) for this application. The `--save` flag modifies the package.json file to include dependencies for our app. The`--global` flag installs nodemon on our entire system.
 
 ```bash
 $ npm install --save express
-$ npm install --save nodemon
+$ npm install --save --global nodemon
 $ npm install --save hbs
 ```
 
@@ -131,7 +131,7 @@ And, to simplify making the request on our backend, we are going to install a de
 $ npm install --save request
 ```
 
-And, in index.js we need to require the new dependency. Somewhere in the top section of index.js:
+And, in index.js we need to require the new dependency. Somewhere in the top section of index.js (but before the app.get):
 ```javascript
 var request = require('request');
 ```
