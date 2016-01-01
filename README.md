@@ -34,7 +34,7 @@ $ touch views/layout.hbs
 $ touch views/index.hbs
 ```
 
-Let's get application running. We need to:
+Let's get the application running. We need to:
 - Require Express.
 - Create an instance of Express and save it to a variable.
 - Set the view engine to use handlebars (hbs).
@@ -60,7 +60,7 @@ Our layout.hbs file will contain the basic structure for our HTML page. We're al
 
 `{{{body}}}` is Handlebar's way of allowing other views to render within this layout page.
 
-Your file should look like this:
+Your layout.hbs file should look like this:
 ```html
 <!DOCTYPE html>
 <html>
@@ -69,6 +69,7 @@ Your file should look like this:
     <script  src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   </head>
   <body>
+    <h1>Cross Stitch</h1>
    {{{body}}}
   </body>
 </html>
@@ -76,8 +77,7 @@ Your file should look like this:
 
 We want to include some basic header text and an empty div for our cross-stitch patterns. Let's add the following to index.hbs:
 ```html
-<h1>Cross Stitch</h1>
-<h2>Newest Patterns</h2>
+<h2>Newest Patterns from <em>andwabisabi</em></h2>
 <div id="patterns"></div>
 ```
 
@@ -117,29 +117,82 @@ Etsy will let us make requests to their API if we register our app with them. Fo
 - [Register your app](https://www.etsy.com/developers/documentation/getting_started/register) with Etsy.
 - After the registration process is completed, Etsy will provide you with a keystring. This is your API key. You can also access it in the future by clicking on "Apps You've Made" and then "See API Key Details".
 
-## Make an AJAX request
+## Prepare to make a request to 3rd Party API
+We need to save the new API key in our .env file. Copy your keystring and save it to a variable called apiKey. You do not need quotes around the keystring. Here's an example of what your .env file should look like:
+```
+apiKey=<your_api_key_here>
+```
 
+And, to simplify making the request on our backend, we are going to install a dependency called "request". In the terminal:
+```bash
+$ npm install --save request
+```
 
-Important information to note from the url variable:
+And, in index.js we need to require the new dependency. At this in the top section of index.js:
+```javascript
+var request = require('request');
+```
+
+## Make a request to 3rd Party API
+Okay! Now we're finally ready to talk to the Etsy API. The Etsy API will provide us with a JSON string that we can use in our application.
+
+Important information to note from the url that we will use to make the request:
 - `5287176` is andwabisabi's Etsy store id number. If you want to get listings from another store, change this number to whichever store you choose.
 - We are looking for the "active" listings only
+- We access the apiKey we just saved to .env with `process.env.apiKey`
 - We are limiting our search results to 100 (limit=100)
 - We are making sure our results include an image (includes=MainImage)
 
-Additionally, we have to manipulate the response from JSONP to JSON compatible and then parse it into an object. Then, we pass in the `etsyData` object to our render function so that it is available to use in our index.hbs template.
+After we receive a response, we save the data as an object to a variable called etsyData. Then, we pass in the `etsyData` object to our render function so that it is available to use in our index.hbs template.
+
+Edit your `app.get("/", function(req, res){});` route in index.js to the following:
 ```javascript
 app.get("/", function(req, res){
-  request("https://openapi.etsy.com/v2/shops/5287176/listings/active.js?method=GET&api_key=" + process.env.apiKey + "&fields=title,url&limit=100&includes=MainImage", function (error, response, body) {
+  request("https://openapi.etsy.com/v2/shops/5287176/listings/active?method=GET&api_key=" + process.env.apiKey + "&fields=title,url&limit=100&includes=MainImage", function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      var etsyData = body;
-      // Manipulate JSONP string into JSON compatible string.
-      etsyData = etsyData.substr(5, (etsyData.length-7));
-      // Parse string into object
-      etsyData = JSON.parse(etsyData);
+      var etsyData = JSON.parse(body);
       res.render("index", {etsyData: etsyData});
     } else {
       console.log(error);
     }
   })
 });
+```
+
+## Use data in a template
+So, our data is now accessible in our index.hbs template. We've passed it in as "etsyData", so we can access the data using that term. `etsyData.results` provides an array of items that we can iterate through.
+
+In handlebars, we can use `{{#each etsyData.results}}` and `{{/each}}` to process a block of html for each result item. We're going to include the items's title, an image and link to the item on Etsy. Within the "#each" block, we can reference the current item as `this`.
+
+The following html/handlebars code should go within the `<div id="patterns"></div>` in index.hbs:
+```html
+<!-- Generate Pattern Divs from Results -->
+{{#each etsyData.results}}
+<div class="pattern">
+  <p>{{this.title}}
+    <a href="{{this.url}}" target="_blank">
+    <button>Stitch It!</button>
+    </a>
+  </p>
+  <img src={{this.MainImage.url_170x135}} alt={{this.title}}>      
+</div>
+{{/each}}
+```
+## Get ready to add CSS
+We've successfully made a call to a 3rd Party API and displayed the information in our template. If we want to add CSS to this project, we should create a public folder and include our stylesheets. To set this up in Express, let's do the following:
+```bash
+$ mkdir public
+$ mkdir public/stylesheets
+$ touch public/stylesheets/style.css
+```
+
+Then, we need to tell Express where to look for public assets. We need to add the following lines to our index.js file:
+```javascript
+var path = require("path");
+app.use(express.static(path.join(__dirname, "/public")));
+```
+
+And, to connect our style.css to our layout, we need to include this link after Normalize.css in the layout.hbs file:
+```html
+<link rel="stylesheet" href="/stylesheets/style.css">
 ```

@@ -1,13 +1,14 @@
-<h1>Cross Stitch</h1>
-<h2>Newest Patterns</h2>
+<h2>Newest Patterns from <em>andwabisabi</em></h2>
 <div id="patterns">
   <!-- Generate Pattern Divs from Results -->
   {{#each etsyData.results}}
-  <a href="{{this.url}}" target="_blank">
-    <div class="pattern">
-      <p>{{this.title}}</p>
-      <img src={{this.MainImage.url_170x135}} alt={{this.title}}>
-    </div>
-  </a>
+  <div class="pattern">
+    <p>{{this.title}}
+      <a href="{{this.url}}" target="_blank">
+      <button>Stitch It!</button>
+      </a>
+    </p>
+    <img src={{this.MainImage.url_170x135}} alt={{this.title}}>      
+  </div>
   {{/each}}
 </div>
