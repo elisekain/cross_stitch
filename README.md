@@ -1,5 +1,8 @@
 # Cross Stitch
-## Create an Express app
+We're going to create an Express app that makes a call to the Etsy API and uses Handlebars to craft templates using our new data from the Etsy API. This tutorial is good practice for anyone looking to:
+- Learn how to setup and start an Express app
+- Practice making a call to a 3rd party API
+- See how Handlebars can be used as a templating engine for Express
 
 ## Express application setup
 Anything in this tutorial that begins with `$` should be entered into your terminal. Let's start by:
@@ -128,7 +131,7 @@ And, to simplify making the request on our backend, we are going to install a de
 $ npm install --save request
 ```
 
-And, in index.js we need to require the new dependency. At this in the top section of index.js:
+And, in index.js we need to require the new dependency. Somewhere in the top section of index.js:
 ```javascript
 var request = require('request');
 ```
@@ -196,3 +199,13 @@ And, to connect our style.css to our layout, we need to include this link after 
 ```html
 <link rel="stylesheet" href="/stylesheets/style.css">
 ```
+
+## Add CSS
+There are lots of different ways to manipulate our page with CSS. Feel free to customize this application as you'd like.
+
+If you want something to start with, you can check out [my CSS styles](https://github.com/elisekain/cross_stitch/blob/master/public/stylesheets/style.css) for the app.
+
+I also added several "X" SVG icons below the "Cross Stitch" header in layout.hbs, so you'll see references to those in my version of the app.
+
+## Further Steps
+This is just a starting point. Dig deeper into the Etsy API to see what other functionality you might want to add. See what else you can do using Handlebars templates. Or, certainly check out a few of the cross stitch patterns and get inspired to craft some of your own!
