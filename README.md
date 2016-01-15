@@ -4,6 +4,8 @@ We're going to create an Express app that makes a call to the Etsy API and uses 
 - Practice making a call to a 3rd party API.
 - See how Handlebars can be used as a templating engine for Express.
 
+View a deployed version of this app: https://cross-stitch-tutorial.herokuapp.com/
+
 ## Express application setup
 Anything in this tutorial that begins with `$` should be entered into your terminal. Let's start by doing just that:
 
