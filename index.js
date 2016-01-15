@@ -19,6 +19,6 @@ app.get("/", function(req, res){
   })
 });
 
-app.listen(4000, function(){
+app.listen(process.env.PORT || 4000, function(){
   console.log("Listening on port 4000. CTRL + C to stop");
 });
